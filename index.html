@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LDTK • Konfigurator dachowy 2025</title>
+    <link rel="shortcut icon" href="favicon.jpg">
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-container">
+        <div class="config-panel">
+            <h3>LDTK • KONFIGURATOR 2025</h3>
+            <div class="steps">
+
+                <div class="section" data-name="c_podloze">
+                    <label>Rodzaj dachu</label>
+                    <select id="rodzaj_dachu">
+                        <option value="concrete">Betonowy</option>
+                        <option value="metal">Metalowy</option>
+                    </select>
+                </div>
+
+                <div class="section">
+                    <label>Czy jest stare ocieplenie / papa?</label>
+                    <div class="toggle-container">
+                        <span class="toggle-label">NIE</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="stare_toggle">
+                            <span class="slider-toggle round"></span>
+                        </label>
+                        <span class="toggle-label">TAK</span>
+                    </div>
+                </div>
+
+                <div class="section" id="stare_grubosc_section" style="display:none; margin-top:1rem;">
+                    <label for="stare_grubosc">Grubość starego ocieplenia (mm)</label>
+                    <input type="range" id="stare_grubosc" min="10" max="150" value="10" step="5">
+                    <strong class="value-display">10 mm</strong>
+                </div>
+
+                <div class="section">
+                    <label for="nowa_grubosc">Grubość nowej izolacji + pokrycie dachowe (mm)</label>
+                    <input type="range" id="nowa_grubosc" min="70" max="700" value="180" step="10">
+                    <strong class="value-display">180 mm</strong>
+                </div>
+
+                <div class="navigation_buttons">
+                    <div class="container">
+                        <button class="suggest_step">Pokaż kompletny zestaw</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="output-panel">
+            <div class="calculation"></div>
+            <div class="results"></div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script type="module" src="./main.js"></script>
+</body>
+
+</html>
