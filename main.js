@@ -51,7 +51,7 @@ function calculate() {
         Stare ocieplenie: <strong>${stareJest ? 'TAK (' + stareGrubosc + ' mm)' : 'NIE'}</strong><br>
         Nowa izolacja + pokrycie: <strong>${nowaGrubosc} mm</strong><br><br>
 
-        <strong>Zalecany zestaw 2025:</strong><br>
+        
         • Tuleja: <strong style="font-size:2.1rem;color:#1565c0;">LDTK ${ldtk.length}</strong><br>
         • Wkręt: <strong style="color:#d32f2f;">${wkretKod}</strong><br>
         • Kotwa w podłożu: <strong>${kotwa} mm</strong>
@@ -59,7 +59,7 @@ function calculate() {
     `);
 
     $results.html(`
-        <h4>Zamów ten zestaw:</h4>
+        
         <div style="text-align:center;padding:2.5rem;background:#e3f2fd;border-radius:16px;">
             <div style="font-size:3rem;font-weight:800;color:#1565c0;margin:1rem 0;">
                 LDTK ${ldtk.length}
