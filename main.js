@@ -1,4 +1,3 @@
-// main.js – finalna, czysta wersja (wszystkie dane w data.js)
 import { LDTK_TABLE, WDB_63, WDS_48 } from './data.js';
 
 const $dach = $('#rodzaj_dachu');
@@ -34,12 +33,10 @@ function calculate() {
     let wkretKod;
 
     if (dach === 'metal') {
-        // Metal: +20 mm (zgubione) + 20 mm (minimalne zakotwienie w blasze)
         const wymagana = nowaGrubosc + 40;
         const wybrany = WDS_48.find(w => w.length >= wymagana) || WDS_48[WDS_48.length - 1];
         wkretKod = wybrany.code;
     } else {
-        // Beton: (nowa − LDTK) + 20 mm (zgubione) + 30 mm (zakotwienie) + stare ocieplenie
         const wymagana = (nowaGrubosc - ldtk.length) + 20 + 30 + stareGrubosc;
         const wybrany = WDB_63.find(w => w.length >= wymagana) || WDB_63[WDB_63.length - 1];
         wkretKod = wybrany.code;
@@ -59,16 +56,12 @@ function calculate() {
     `);
 
     $results.html(`
-        
         <div style="text-align:center;padding:2.5rem;background:#e3f2fd;border-radius:16px;">
             <div style="font-size:3rem;font-weight:800;color:#1565c0;margin:1rem 0;">
                 LDTK ${ldtk.length}
             </div>
             <div style="font-size:2.4rem;color:#d32f2f;margin:1rem 0;">
                 + ${wkretKod}
-            </div>
-            <div style="margin-top:1rem;color:#555;">
-                Kotwa ${kotwa} mm
             </div>
         </div>
     `);
