@@ -59,16 +59,12 @@ function calculate() {
     `);
 
     $results.html(`
-        <h4>Zamów ten zestaw:</h4>
         <div style="text-align:center;padding:2.5rem;background:#e3f2fd;border-radius:16px;">
             <div style="font-size:3rem;font-weight:800;color:#1565c0;margin:1rem 0;">
                 LDTK ${ldtk.length}
             </div>
             <div style="font-size:2.4rem;color:#d32f2f;margin:1rem 0;">
                 + ${wkretKod}
-            </div>
-            <div style="margin-top:1rem;color:#555;">
-                Kotwa ${kotwa} mm
             </div>
         </div>
     `);
