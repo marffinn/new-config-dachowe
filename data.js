@@ -144,3 +144,25 @@ export const CONCRETE_TABLE = [
     { insulation: 870, length: 525, screw: 400 },
     { insulation: 880, length: 525, screw: 400 }
 ];
+
+// WDB 6.3 – tylko na beton
+export const WDB_63 = [
+    { code: "WDB 63 60", length: 60 },
+    { code: "WDB 63 70", length: 70 },
+    { code: "WDB 63 80", length: 80 },
+    { code: "WDB 63 100", length: 100 },
+    { code: "WDB 63 120", length: 120 },
+    { code: "WDB 63 160", length: 160 },
+    { code: "WDB 63 200", length: 200 },
+    { code: "WDB 63 300", length: 300 },
+    { code: "WDB 63 350", length: 350 },
+    { code: "WDB 63 400", length: 400 }
+];
+
+// WDS 4.8 – tylko na metal
+export const WDS_48 = [
+    { code: "WDS 48 60", length: 60 },
+    { code: "WDS 48 80", length: 80 },
+    { code: "WDS 48 100", length: 100 },
+    { code: "WDS 48 120", length: 120 }
+];
