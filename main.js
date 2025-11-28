@@ -62,23 +62,20 @@ function calculate() {
         Stare ocieplenie: <strong>${stareJest ? 'TAK (papa ' + starePapaVal + ' mm + ocieplenie ' + stareOcieplenieVal + ' mm = ' + stareSum + ' mm)' : 'NIE'}</strong><br>
         Nowa izolacja + pokrycie: <strong>${nowaGrubosc} mm</strong><br><br>
 
-        <strong>Zalecany zestaw 2025 (z tabeli):</strong><br>
+        
         • Tuleja: <strong style="font-size:2.1rem;color:#1565c0;">LDTK ${row.length}</strong><br>
-        • Wkręt: <strong style="color:#d32f2f;">${screwCode}</strong><br>
+        • Wkręt: <strong style="font-size:.8rem;color:#d32f2f;">${screwCode}</strong><br>
         • Kotwa w podłożu: <strong>${kotwa} mm</strong>
     `);
 
     $results.html(`
         <h4>Zamów ten zestaw:</h4>
         <div style="text-align:center;padding:2.5rem;background:#e3f2fd;border-radius:16px;">
-            <div style="font-size:3rem;font-weight:800;color:#1565c0;margin:1rem 0;">
+            <div style="font-size:2rem;font-weight:800;color:#1565c0;margin:1rem 0;">
                 LDTK ${row.length}
             </div>
-            <div style="font-size:2.4rem;color:#d32f2f;margin:1rem 0;">
+            <div style="font-size:1.5rem;color:#d32f2f;margin:1rem 0;">
                 + ${screwCode}
-            </div>
-            <div style="margin-top:1rem;color:#555;">
-                Kotwa ${kotwa} mm
             </div>
         </div>
     `);
