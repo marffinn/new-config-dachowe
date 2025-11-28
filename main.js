@@ -1,4 +1,5 @@
-import { LDTK_TABLE, WDB_63, WDS_48 } from './data.js';
+// main.js – Adapted to fixed table values from CSV
+import { METAL_TABLE, CONCRETE_TABLE } from './data.js';
 
 const $dach = $('#rodzaj_dachu');
 const $stareToggle = $('#stare_toggle');
@@ -19,54 +20,51 @@ function calculate() {
     const stareJest = $stareToggle.is(':checked');
     const stareGrubosc = stareJest ? parseInt($stareGrubosc.val()) : 0;
     const nowaGrubosc = parseInt($nowaGrubosc.val());
+    const effectiveInsulation = nowaGrubosc + stareGrubosc;  // Add old to effective for lookup
     const kotwa = dach === 'concrete' ? 50 : 14;
 
     $('#stare_grubosc_section').toggle(stareJest);
 
-    const ldtk = LDTK_TABLE.find(r => r.insulation >= nowaGrubosc);
-    if (!ldtk) {
-        $calculation.html('<p style="color:#c62828;font-weight:600;">Grubość nowej izolacji poza zakresem (70–700 mm)</p>');
+    const table = dach === 'metal' ? METAL_TABLE : CONCRETE_TABLE;
+
+    const row = table.find(r => r.insulation >= effectiveInsulation);
+    if (!row) {
+        $calculation.html('<p style="color:#c62828;font-weight:600;">Grubość poza zakresem tabeli</p>');
         $results.empty();
         return;
     }
 
-    let wkretKod;
-
-    if (dach === 'metal') {
-        const wymagana = nowaGrubosc + 40;
-        const wybrany = WDS_48.find(w => w.length >= wymagana) || WDS_48[WDS_48.length - 1];
-        wkretKod = wybrany.code;
-    } else {
-        const wymagana = (nowaGrubosc - ldtk.length) + 20 + 30 + stareGrubosc;
-        const wybrany = WDB_63.find(w => w.length >= wymagana) || WDB_63[WDB_63.length - 1];
-        wkretKod = wybrany.code;
-    }
+    const screwCode = dach === 'metal' ? `WDS 48 ${row.screw}` : `WDB 63 ${row.screw}`;
 
     $calculation.html(`
         <strong>Parametry:</strong><br>
         Rodzaj dachu: <strong>${$dach.find('option:selected').text()}</strong><br>
         Stare ocieplenie: <strong>${stareJest ? 'TAK (' + stareGrubosc + ' mm)' : 'NIE'}</strong><br>
-        Nowa izolacja + pokrycie: <strong>${nowaGrubosc} mm</strong><br><br>
+        Skuteczna grubość: <strong>${effectiveInsulation} mm</strong><br><br>
 
-        
-        • Tuleja: <strong style="font-size:2.1rem;color:#1565c0;">LDTK ${ldtk.length}</strong><br>
-        • Wkręt: <strong style="color:#d32f2f;">${wkretKod}</strong><br>
+        <strong>Zalecany zestaw 2025 (z tabeli):</strong><br>
+        • Tuleja: <strong style="font-size:2.1rem;color:#1565c0;">LDTK ${row.length}</strong><br>
+        • Wkręt: <strong style="color:#d32f2f;">${screwCode}</strong><br>
         • Kotwa w podłożu: <strong>${kotwa} mm</strong>
-        <small>(${dach === 'concrete' ? 'min. 30 mm w betonie' : 'min. 20 mm w blasze'})</small>
     `);
 
     $results.html(`
+        <h4>Zamów ten zestaw:</h4>
         <div style="text-align:center;padding:2.5rem;background:#e3f2fd;border-radius:16px;">
             <div style="font-size:3rem;font-weight:800;color:#1565c0;margin:1rem 0;">
-                LDTK ${ldtk.length}
+                LDTK ${row.length}
             </div>
             <div style="font-size:2.4rem;color:#d32f2f;margin:1rem 0;">
-                + ${wkretKod}
+                + ${screwCode}
+            </div>
+            <div style="margin-top:1rem;color:#555;">
+                Kotwa ${kotwa} mm
             </div>
         </div>
     `);
 }
 
+// Events
 $stareToggle.on('change', calculate);
 $stareGrubosc.on('input', calculate);
 $nowaGrubosc.on('input', calculate);
