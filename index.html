@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LDTK • Konfigurator dachowy</title>
+    <title>LDTK • Konfigurator dachowy 2025</title>
     <link rel="shortcut icon" href="favicon.jpg">
     <link rel="stylesheet" href="./style.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap" rel="stylesheet">
@@ -13,7 +13,7 @@
 <body>
     <div class="app-container">
         <div class="config-panel">
-            <h3>LDTK • KONFIGURATOR</h3>
+            <h3>LDTK • KONFIGURATOR 2025</h3>
             <div class="steps">
 
                 <div class="section" data-name="c_podloze">
@@ -36,16 +36,22 @@
                     </div>
                 </div>
 
-                <div class="section" id="stare_grubosc_section" style="display:none; margin-top:1rem;">
-                    <label for="stare_grubosc">Grubość starego ocieplenia (mm)</label>
-                    <input type="range" id="stare_grubosc" min="10" max="150" value="10" step="5">
-                    <strong class="value-display">10 mm</strong>
+                <div class="section" id="stare_papa_section" style="display:none; margin-top:1rem;">
+                    <label for="stare_papa">Grubość starej papy (mm)</label>
+                    <input type="range" id="stare_papa" min="0" max="50" value="0" step="10">
+                    <strong class="value-display">0 mm</strong>
+                </div>
+
+                <div class="section" id="stare_ocieplenie_section" style="display:none; margin-top:1rem;">
+                    <label for="stare_ocieplenie">Grubość starego ocieplenia (mm)</label>
+                    <input type="range" id="stare_ocieplenie" min="0" max="50" value="0" step="10">
+                    <strong class="value-display">0 mm</strong>
                 </div>
 
                 <div class="section">
                     <label for="nowa_grubosc">Grubość nowej izolacji + pokrycie dachowe (mm)</label>
-                    <input type="range" id="nowa_grubosc" min="50" max="880" value="50" step="10">
-                    <strong class="value-display">50 mm</strong>
+                    <input type="range" id="nowa_grubosc" min="50" max="880" value="180" step="10">
+                    <strong class="value-display">180 mm</strong>
                 </div>
 
                 <div class="navigation_buttons">
