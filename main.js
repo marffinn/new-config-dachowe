@@ -1,74 +1,104 @@
-// main.js – Adapted to fixed table values from CSV
+/**
+ * LDTK Roof Configurator - Main Application Logic
+ * Handles user input, calculations, and display updates for roof specifications
+ */
+
 import { METAL_TABLE, CONCRETE_TABLE, WDB_63, WDS_48 } from './data.js';
 
-const $dach = $('#rodzaj_dachu');
-const $stareToggle = $('#stare_toggle');
-const $starePapa = $('#stare_papa');
-const $stareOcieplenie = $('#stare_ocieplenie');
-const $nowaGrubosc = $('#nowa_grubosc');
-const $calculation = $('.calculation');
-const $results = $('.results');
+// ─────────────────────────────────────────────────────────────────
+// DOM ELEMENTS
+// ─────────────────────────────────────────────────────────────────
 
-function updateDisplays() {
-    $('.value-display').eq(0).text($starePapa.val() + ' mm');
-    $('.value-display').eq(1).text($stareOcieplenie.val() + ' mm');
-    $('.value-display').eq(2).text($nowaGrubosc.val() + ' mm');
+const DOM = {
+    roofType: $('#rodzaj_dachu'),
+    hasOldInsulation: $('#stare_toggle'),
+    oldWaterproofing: $('#stare_papa'),
+    oldInsulation: $('#stare_ocieplenie'),
+    newThickness: $('#nowa_grubosc'),
+    calculation: $('.calculation'),
+    results: $('.results'),
+};
+
+// ─────────────────────────────────────────────────────────────────
+// UI UPDATES
+// ─────────────────────────────────────────────────────────────────
+
+function updateDisplayValues() {
+    const displays = $('.value-display');
+    displays.eq(0).text(`${DOM.oldWaterproofing.val()} mm`);
+    displays.eq(1).text(`${DOM.oldInsulation.val()} mm`);
+    displays.eq(2).text(`${DOM.newThickness.val()} mm`);
 }
 
 function calculate() {
-    updateDisplays();
+    updateDisplayValues();
 
-    const dach = $dach.val();
-    const stareJest = $stareToggle.is(':checked');
-    const starePapaVal = stareJest ? parseInt($starePapa.val()) : 0;
-    const stareOcieplenieVal = stareJest ? parseInt($stareOcieplenie.val()) : 0;
-    const stareSum = starePapaVal + stareOcieplenieVal;  // Sum of two sliders
-    const nowaGrubosc = parseInt($nowaGrubosc.val());
-    const effectiveInsulation = nowaGrubosc;  // Lookup based on new insulation only
-    const kotwa = dach === 'concrete' ? 50 : 14;
+    // ─ Get form inputs
+    const roofType = DOM.roofType.val();
+    const hasOld = DOM.hasOldInsulation.is(':checked');
+    const waterproofingThickness = hasOld ? parseInt(DOM.oldWaterproofing.val()) : 0;
+    const insultionThickness = hasOld ? parseInt(DOM.oldInsulation.val()) : 0;
+    const totalOldThickness = waterproofingThickness + insultionThickness;
+    const newThickness = parseInt(DOM.newThickness.val());
 
-    $('#stare_papa_section').toggle(stareJest);
-    $('#stare_ocieplenie_section').toggle(stareJest);
+    // ─ Determine anchor depth based on roof type
+    const anchorDepth = roofType === 'concrete' ? 50 : 14;
 
-    const table = dach === 'metal' ? METAL_TABLE : CONCRETE_TABLE;
+    // ─ Toggle visibility of old layers sections
+    $('#stare_papa_section').toggle(hasOld);
+    $('#stare_ocieplenie_section').toggle(hasOld);
 
-    const row = table.find(r => r.insulation >= effectiveInsulation);
-    if (!row) {
-        $calculation.html('<p style="color:#c62828;font-weight:600;">Grubość poza zakresem tabeli</p>');
-        $results.empty();
+    // ─ Select lookup table
+    const lookupTable = roofType === 'metal' ? METAL_TABLE : CONCRETE_TABLE;
+
+    // ─ Find row for current thickness
+    const tableRow = lookupTable.find(row => row.insulation >= newThickness);
+    if (!tableRow) {
+        DOM.calculation.html('<p style="color:#c62828;font-weight:600;">Grubość poza zakresem tabeli</p>');
+        DOM.results.empty();
         return;
     }
 
-    // Calculate new screw length = base from table + sum
-    const baseScrew = row.screw;
-    const calculatedScrew = baseScrew + stareSum;
+    // ─ Calculate screw length
+    const baseScrewLength = tableRow.screw;
+    const calculatedScrewLength = baseScrewLength + totalOldThickness;
 
-    // Select the screw array based on roof type
-    const screwArray = dach === 'metal' ? WDS_48 : WDB_63;
+    // ─ Select screw array (WDS_48 for metal, WDB_63 for concrete)
+    const screwArray = roofType === 'metal' ? WDS_48 : WDB_63;
 
-    // Find the next longer or equal physical screw
-    const selectedScrew = screwArray.find(s => s.length >= calculatedScrew);
+    // ─ Find matching screw
+    const matchedScrew = screwArray.find(screw => screw.length >= calculatedScrewLength);
+    const screwCode = matchedScrew
+        ? matchedScrew.code
+        : 'Brak pasującego wkrętu – przekroczono maksymalną długość';
 
-    let screwCode;
-    if (selectedScrew) {
-        screwCode = selectedScrew.code;
-    } else {
-        screwCode = 'Brak pasującego wkrętu – przekroczono maksymalną długość';
-    }
+    // ─ Display calculation parameters
+    displayCalculationPanel(roofType, hasOld, waterproofingThickness, insultionThickness, totalOldThickness, newThickness, tableRow, anchorDepth, screwCode);
 
-    $calculation.html(`
+    // ─ Display order summary
+    displayResults(tableRow, screwCode);
+}
+
+function displayCalculationPanel(roofType, hasOld, waterproofing, insulation, total, newThickness, row, anchor, screwCode) {
+    const roofLabel = roofType === 'metal' ? 'Metalowy' : 'Betonowy';
+    const oldLayersInfo = hasOld
+        ? `TAK (papa ${waterproofing} mm + ocieplenie ${insulation} mm = ${total} mm)`
+        : 'NIE';
+
+    DOM.calculation.html(`
         <strong>Parametry:</strong><br>
-        Rodzaj dachu: <strong>${$dach.find('option:selected').text()}</strong><br>
-        Stare ocieplenie: <strong>${stareJest ? 'TAK (papa ' + starePapaVal + ' mm + ocieplenie ' + stareOcieplenieVal + ' mm = ' + stareSum + ' mm)' : 'NIE'}</strong><br>
-        Nowa izolacja + pokrycie: <strong>${nowaGrubosc} mm</strong><br><br>
+        Rodzaj dachu: <strong>${roofLabel}</strong><br>
+        Stare ocieplenie: <strong>${oldLayersInfo}</strong><br>
+        Nowa izolacja + pokrycie: <strong>${newThickness} mm</strong><br><br>
 
-        
         • Tuleja: <strong style="font-size:2.1rem;color:#1565c0;">LDTK ${row.length}</strong><br>
         • Wkręt: <strong style="font-size:.8rem;color:#d32f2f;">${screwCode}</strong><br>
-        • Kotwa w podłożu: <strong>${kotwa} mm</strong>
+        • Kotwa w podłożu: <strong>${anchor} mm</strong>
     `);
+}
 
-    $results.html(`
+function displayResults(row, screwCode) {
+    DOM.results.html(`
         <h4>Zamów ten zestaw:</h4>
         <div style="text-align:center;padding:2.5rem;background:#e3f2fd;border-radius:16px;">
             <div style="font-size:2rem;font-weight:800;color:#1565c0;margin:1rem 0;">
@@ -81,11 +111,14 @@ function calculate() {
     `);
 }
 
-// Events
-$stareToggle.on('change', calculate);
-$starePapa.on('input', calculate);
-$stareOcieplenie.on('input', calculate);
-$nowaGrubosc.on('input', calculate);
-$dach.on('change', calculate);
+// ─────────────────────────────────────────────────────────────────
+// EVENT LISTENERS
+// ─────────────────────────────────────────────────────────────────
+
+DOM.hasOldInsulation.on('change', calculate);
+DOM.oldWaterproofing.on('input', calculate);
+DOM.oldInsulation.on('input', calculate);
+DOM.newThickness.on('input', calculate);
+DOM.roofType.on('change', calculate);
 $('.suggest_step').on('click', calculate);
 $(document).ready(calculate);

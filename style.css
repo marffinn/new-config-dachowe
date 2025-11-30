@@ -1,6 +1,15 @@
-/* ────────────────────────────────────────────────────────────────
-   PAGE LAYOUT
-   ──────────────────────────────────────────────────────────────── */
+/**
+ * LDTK Roof Configurator - Main Stylesheet
+ * 
+ * Layout: Responsive two-column flex layout (config panel + results panel)
+ * Color Scheme: Primary blue (#1976d2), Alert red (#d32f2f)
+ * Responsive: Stacks on mobile, optimized for print
+ */
+
+/* ─────────────────────────────────────────────────────────────────
+   GLOBAL & PAGE LAYOUT
+   ───────────────────────────────────────────────────────────────── */
+
 html,
 body {
     height: 100%;
@@ -19,9 +28,10 @@ body {
     flex-wrap: wrap;
 }
 
-/* ────────────────────────────────────────────────────────────────
-   LEFT: CONFIGURATOR
-   ──────────────────────────────────────────────────────────────── */
+/* ─────────────────────────────────────────────────────────────────
+   CONFIG PANEL (LEFT SIDE)
+   ───────────────────────────────────────────────────────────────── */
+
 .config-panel {
     flex: 1;
     min-width: 300px;
@@ -56,10 +66,11 @@ body {
 .steps .section input[type="range"] {
     width: 100%;
     font-size: .9rem;
-    /* border: 1px solid #ccc; */
-    /* border-radius: 6px; */
-    /* background: #fafafa; */
 }
+
+/* ─────────────────────────────────────────────────────────────────
+   SELECT DROPDOWN STYLING
+   ───────────────────────────────────────────────────────────────── */
 
 .steps .section select {
     padding: .5rem .7rem;
@@ -71,9 +82,10 @@ body {
     background-size: 10px;
 }
 
-/* ────────────────────────────────────────────────────────────────
-   TOGGLE SWITCH
-   ──────────────────────────────────────────────────────────────── */
+/* ─────────────────────────────────────────────────────────────────
+   TOGGLE SWITCH COMPONENT
+   ───────────────────────────────────────────────────────────────── */
+
 .toggle-container {
     display: flex;
     align-items: center;
@@ -114,7 +126,7 @@ body {
     border-radius: 34px;
 }
 
-.slider-toggle:before {
+.slider-toggle::before {
     position: absolute;
     content: "";
     height: 20px;
@@ -130,7 +142,7 @@ input:checked+.slider-toggle {
     background-color: #1976d2;
 }
 
-input:checked+.slider-toggle:before {
+input:checked+.slider-toggle::before {
     transform: translateX(22px);
 }
 
@@ -138,13 +150,14 @@ input:checked+.slider-toggle:before {
     border-radius: 34px;
 }
 
-.slider-toggle.round:before {
+.slider-toggle.round::before {
     border-radius: 50%;
 }
 
-/* ────────────────────────────────────────────────────────────────
-   RANGE SLIDER
-   ──────────────────────────────────────────────────────────────── */
+/* ─────────────────────────────────────────────────────────────────
+   RANGE SLIDER COMPONENT
+   ───────────────────────────────────────────────────────────────── */
+
 input[type="range"] {
     -webkit-appearance: none;
     appearance: none;
@@ -190,9 +203,10 @@ input[type="range"]:hover {
     text-align: center;
 }
 
-/* ────────────────────────────────────────────────────────────────
+/* ─────────────────────────────────────────────────────────────────
    NAVIGATION BUTTONS
-   ──────────────────────────────────────────────────────────────── */
+   ───────────────────────────────────────────────────────────────── */
+
 .navigation_buttons {
     display: flex;
     justify-content: center;
@@ -222,9 +236,10 @@ input[type="range"]:hover {
     transform: translateY(-1px);
 }
 
-/* ────────────────────────────────────────────────────────────────
-   RIGHT: CALC + RESULTS
-   ──────────────────────────────────────────────────────────────── */
+/* ─────────────────────────────────────────────────────────────────
+   OUTPUT PANEL (RIGHT SIDE) - CALCULATION & RESULTS
+   ───────────────────────────────────────────────────────────────── */
+
 .output-panel {
     flex: 1;
     min-width: 300px;
@@ -301,9 +316,10 @@ input[type="range"]:hover {
     margin: 0;
 }
 
-/* ────────────────────────────────────────────────────────────────
-   RESPONSIVE
-   ──────────────────────────────────────────────────────────────── */
+/* ─────────────────────────────────────────────────────────────────
+   RESPONSIVE BREAKPOINTS - TABLET & MOBILE
+   ───────────────────────────────────────────────────────────────── */
+
 @media (max-width: 768px) {
     .app-container {
         flex-direction: column;
@@ -328,6 +344,10 @@ input[type="range"]:hover {
         font-size: .75rem;
     }
 }
+
+/* ─────────────────────────────────────────────────────────────────
+   PRINT STYLES
+   ───────────────────────────────────────────────────────────────── */
 
 @media print {
     .app-container {

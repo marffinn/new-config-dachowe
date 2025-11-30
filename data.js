@@ -1,4 +1,15 @@
-// data.js – Fixed values from the CSV (metalowe and betonowe mappings)
+/**
+ * LDTK Roof Configurator - Lookup Tables & Configuration Data
+ * 
+ * Contains screw and tube specifications for metal and concrete roof installations
+ * based on insulation thickness requirements.
+ */
+
+// ─────────────────────────────────────────────────────────────────
+// METAL ROOF LOOKUP TABLE
+// Maps insulation thickness (mm) → tube length & screw requirements
+// ─────────────────────────────────────────────────────────────────
+
 export const METAL_TABLE = [
     { insulation: 50, length: 35, screw: 60 },
     { insulation: 60, length: 35, screw: 60 },
@@ -57,6 +68,11 @@ export const METAL_TABLE = [
     { insulation: 590, length: 525, screw: 100 },
     { insulation: 600, length: 525, screw: 120 }
 ];
+
+// ─────────────────────────────────────────────────────────────────
+// CONCRETE ROOF LOOKUP TABLE
+// Maps insulation thickness (mm) → tube length & screw requirements
+// ─────────────────────────────────────────────────────────────────
 
 export const CONCRETE_TABLE = [
     { insulation: 50, length: 35, screw: 70 },
@@ -145,7 +161,11 @@ export const CONCRETE_TABLE = [
     { insulation: 880, length: 525, screw: 400 }
 ];
 
-// WDB 6.3 – tylko na beton
+// ─────────────────────────────────────────────────────────────────
+// CONCRETE FASTENER SPECIFICATIONS (WDB 6.3)
+// Available screw lengths for concrete roof installations
+// ─────────────────────────────────────────────────────────────────
+
 export const WDB_63 = [
     { code: "WDB 63 60", length: 60 },
     { code: "WDB 63 70", length: 70 },
@@ -159,7 +179,11 @@ export const WDB_63 = [
     { code: "WDB 63 400", length: 400 }
 ];
 
-// WDS 4.8 – tylko na metal
+// ─────────────────────────────────────────────────────────────────
+// METAL FASTENER SPECIFICATIONS (WDS 4.8)
+// Available screw lengths for metal roof installations
+// ─────────────────────────────────────────────────────────────────
+
 export const WDS_48 = [
     { code: "WDS 48 60", length: 60 },
     { code: "WDS 48 80", length: 80 },
