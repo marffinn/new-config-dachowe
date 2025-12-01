@@ -25,9 +25,9 @@ const DOM = {
 
 function updateDisplayValues() {
     const displays = $('.value-display');
-    displays.eq(0).text(`${DOM.oldWaterproofing.val()} mm`);
-    displays.eq(1).text(`${DOM.oldInsulation.val()} mm`);
-    displays.eq(2).text(`${DOM.newThickness.val()} mm`);
+    displays.eq(0).text(`${DOM.newThickness.val()} mm`);
+    displays.eq(1).text(`${DOM.oldWaterproofing.val()} mm`);
+    displays.eq(2).text(`${DOM.oldInsulation.val()} mm`);
 }
 
 function calculate() {
