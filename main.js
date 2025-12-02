@@ -1,13 +1,5 @@
-/**
- * LDTK Roof Configurator - Main Application Logic
- * Handles user input, calculations, and display updates for roof specifications
- */
 
 import { METAL_TABLE, CONCRETE_TABLE, WDB_63, WDS_48 } from './data.js';
-
-// ─────────────────────────────────────────────────────────────────
-// DOM ELEMENTS
-// ─────────────────────────────────────────────────────────────────
 
 const DOM = {
     roofType: $('#rodzaj_dachu'),
@@ -18,10 +10,6 @@ const DOM = {
     results: $('.results'),
 };
 
-// ─────────────────────────────────────────────────────────────────
-// UI UPDATES
-// ─────────────────────────────────────────────────────────────────
-
 function updateDisplayValues() {
     const displays = $('.value-display');
     displays.eq(0).text(`${DOM.newThickness.val()} mm`);
@@ -31,13 +19,11 @@ function updateDisplayValues() {
 function calculate() {
     updateDisplayValues();
 
-    // ─ Get form inputs
     const roofType = DOM.roofType.val();
     let hasOld = DOM.hasOldInsulation.is(':checked');
     let totalOldThickness = hasOld ? parseInt(DOM.oldThickness.val()) : 0;
     const newThickness = parseInt(DOM.newThickness.val());
 
-    // ─ Handle visibility based on roof type
     if (roofType === 'metal') {
         $('#stare_toggle_section').hide();
         $('#stare_warstwy_section').hide();
@@ -55,13 +41,10 @@ function calculate() {
         return;
     }
 
-    // ─ Determine anchor depth based on roof type
     const anchorDepth = roofType === 'concrete' ? 50 : 14;
 
-    // ─ Select lookup table
     const lookupTable = roofType === 'metal' ? METAL_TABLE : CONCRETE_TABLE;
 
-    // ─ Find row for current thickness
     const tableRow = lookupTable.find(row => row.insulation >= newThickness);
     if (!tableRow) {
         DOM.calculation.html('<p style="color:#c62828;font-weight:600;">Grubość poza zakresem tabeli</p>');
@@ -69,23 +52,18 @@ function calculate() {
         return;
     }
 
-    // ─ Calculate screw length
     const baseScrewLength = tableRow.screw;
     const calculatedScrewLength = baseScrewLength + totalOldThickness;
 
-    // ─ Select screw array (WDS_48 for metal, WDB_63 for concrete)
     const screwArray = roofType === 'metal' ? WDS_48 : WDB_63;
 
-    // ─ Find matching screw
     const matchedScrew = screwArray.find(screw => screw.length >= calculatedScrewLength);
     const screwCode = matchedScrew
         ? matchedScrew.code
         : 'Brak pasującego wkrętu – przekroczono maksymalną długość';
 
-    // ─ Display calculation parameters
     displayCalculationPanel(roofType, hasOld, totalOldThickness, newThickness, tableRow, anchorDepth, screwCode);
 
-    // ─ Display order summary
     displayResults(tableRow, screwCode);
 }
 
@@ -120,10 +98,6 @@ function displayResults(row, screwCode) {
         </div>
     `);
 }
-
-// ─────────────────────────────────────────────────────────────────
-// EVENT LISTENERS
-// ─────────────────────────────────────────────────────────────────
 
 DOM.hasOldInsulation.on('change', calculate);
 DOM.oldThickness.on('input', calculate);
