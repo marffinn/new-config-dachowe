@@ -33,9 +33,21 @@ function calculate() {
 
     // ─ Get form inputs
     const roofType = DOM.roofType.val();
-    const hasOld = DOM.hasOldInsulation.is(':checked');
-    const totalOldThickness = hasOld ? parseInt(DOM.oldThickness.val()) : 0;
+    let hasOld = DOM.hasOldInsulation.is(':checked');
+    let totalOldThickness = hasOld ? parseInt(DOM.oldThickness.val()) : 0;
     const newThickness = parseInt(DOM.newThickness.val());
+
+    // ─ Handle visibility based on roof type
+    if (roofType === 'metal') {
+        $('#stare_toggle_section').hide();
+        $('#stare_warstwy_section').hide();
+        DOM.hasOldInsulation.prop('checked', false);
+        hasOld = false;
+        totalOldThickness = 0;
+    } else {
+        $('#stare_toggle_section').show();
+        $('#stare_warstwy_section').toggle(hasOld);
+    }
 
     if (newThickness <= 60) {
         DOM.calculation.empty();
@@ -45,9 +57,6 @@ function calculate() {
 
     // ─ Determine anchor depth based on roof type
     const anchorDepth = roofType === 'concrete' ? 50 : 14;
-
-    // ─ Toggle visibility of old layers sections
-    $('#stare_warstwy_section').toggle(hasOld);
 
     // ─ Select lookup table
     const lookupTable = roofType === 'metal' ? METAL_TABLE : CONCRETE_TABLE;
