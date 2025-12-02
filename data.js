@@ -11,8 +11,8 @@
 // ─────────────────────────────────────────────────────────────────
 
 export const METAL_TABLE = [
-    // { insulation: 50, length: 35, screw: 60 },
-    // { insulation: 60, length: 35, screw: 60 },
+    { insulation: 50, length: 35, screw: 60 },
+    { insulation: 60, length: 35, screw: 60 },
     { insulation: 70, length: 55, screw: 60 },
     { insulation: 80, length: 55, screw: 60 },
     { insulation: 90, length: 55, screw: 80 },
@@ -75,8 +75,8 @@ export const METAL_TABLE = [
 // ─────────────────────────────────────────────────────────────────
 
 export const CONCRETE_TABLE = [
-    // { insulation: 50, length: 35, screw: 70 },
-    // { insulation: 60, length: 35, screw: 70 },
+    { insulation: 50, length: 35, screw: 70 },
+    { insulation: 60, length: 35, screw: 70 },
     { insulation: 70, length: 55, screw: 70 },
     { insulation: 80, length: 55, screw: 70 },
     { insulation: 90, length: 55, screw: 80 },
