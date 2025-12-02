@@ -41,7 +41,7 @@ function calculate() {
         return;
     }
 
-    const anchorDepth = roofType === 'concrete' ? 50 : 14;
+    const anchorDepth = roofType === 'concrete' ? 30 : 14;
 
     const lookupTable = roofType === 'metal' ? METAL_TABLE : CONCRETE_TABLE;
 
