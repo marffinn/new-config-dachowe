@@ -174,6 +174,7 @@ export const WDB_63 = [
     { code: "WDB 63 120", length: 120 },
     { code: "WDB 63 160", length: 160 },
     { code: "WDB 63 200", length: 200 },
+    { code: "WDB 63 250", length: 250 },
     { code: "WDB 63 300", length: 300 },
     { code: "WDB 63 350", length: 350 },
     { code: "WDB 63 400", length: 400 }
