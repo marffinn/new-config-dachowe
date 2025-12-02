@@ -126,7 +126,7 @@ export const CONCRETE_TABLE = [
     { insulation: 530, length: 425, screw: 160 },
     { insulation: 540, length: 425, screw: 160 },
     { insulation: 550, length: 425, screw: 200 },
-    { insulation: 560, length: 525, screw: 200 },
+    { insulation: 560, length: 425, screw: 200 },
     { insulation: 570, length: 525, screw: 100 },
     { insulation: 580, length: 525, screw: 100 },
     { insulation: 590, length: 525, screw: 120 },
