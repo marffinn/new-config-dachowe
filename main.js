@@ -12,8 +12,7 @@ import { METAL_TABLE, CONCRETE_TABLE, WDB_63, WDS_48 } from './data.js';
 const DOM = {
     roofType: $('#rodzaj_dachu'),
     hasOldInsulation: $('#stare_toggle'),
-    oldWaterproofing: $('#stare_papa'),
-    oldInsulation: $('#stare_ocieplenie'),
+    oldThickness: $('#stare_grubosc'),
     newThickness: $('#nowa_grubosc'),
     calculation: $('.calculation'),
     results: $('.results'),
@@ -26,8 +25,7 @@ const DOM = {
 function updateDisplayValues() {
     const displays = $('.value-display');
     displays.eq(0).text(`${DOM.newThickness.val()} mm`);
-    displays.eq(1).text(`${DOM.oldWaterproofing.val()} mm`);
-    displays.eq(2).text(`${DOM.oldInsulation.val()} mm`);
+    displays.eq(1).text(`${DOM.oldThickness.val()} mm`);
 }
 
 function calculate() {
@@ -36,17 +34,20 @@ function calculate() {
     // ─ Get form inputs
     const roofType = DOM.roofType.val();
     const hasOld = DOM.hasOldInsulation.is(':checked');
-    const waterproofingThickness = hasOld ? parseInt(DOM.oldWaterproofing.val()) : 0;
-    const insultionThickness = hasOld ? parseInt(DOM.oldInsulation.val()) : 0;
-    const totalOldThickness = waterproofingThickness + insultionThickness;
+    const totalOldThickness = hasOld ? parseInt(DOM.oldThickness.val()) : 0;
     const newThickness = parseInt(DOM.newThickness.val());
+
+    if (newThickness <= 60) {
+        DOM.calculation.empty();
+        DOM.results.empty();
+        return;
+    }
 
     // ─ Determine anchor depth based on roof type
     const anchorDepth = roofType === 'concrete' ? 50 : 14;
 
     // ─ Toggle visibility of old layers sections
-    $('#stare_papa_section').toggle(hasOld);
-    $('#stare_ocieplenie_section').toggle(hasOld);
+    $('#stare_warstwy_section').toggle(hasOld);
 
     // ─ Select lookup table
     const lookupTable = roofType === 'metal' ? METAL_TABLE : CONCRETE_TABLE;
@@ -73,16 +74,16 @@ function calculate() {
         : 'Brak pasującego wkrętu – przekroczono maksymalną długość';
 
     // ─ Display calculation parameters
-    displayCalculationPanel(roofType, hasOld, waterproofingThickness, insultionThickness, totalOldThickness, newThickness, tableRow, anchorDepth, screwCode);
+    displayCalculationPanel(roofType, hasOld, totalOldThickness, newThickness, tableRow, anchorDepth, screwCode);
 
     // ─ Display order summary
     displayResults(tableRow, screwCode);
 }
 
-function displayCalculationPanel(roofType, hasOld, waterproofing, insulation, total, newThickness, row, anchor, screwCode) {
+function displayCalculationPanel(roofType, hasOld, total, newThickness, row, anchor, screwCode) {
     const roofLabel = roofType === 'metal' ? 'Metalowy' : 'Betonowy';
     const oldLayersInfo = hasOld
-        ? `TAK (papa ${waterproofing} mm + ocieplenie ${insulation} mm = ${total} mm)`
+        ? `TAK (${total} mm)`
         : 'NIE';
 
     DOM.calculation.html(`
@@ -116,8 +117,7 @@ function displayResults(row, screwCode) {
 // ─────────────────────────────────────────────────────────────────
 
 DOM.hasOldInsulation.on('change', calculate);
-DOM.oldWaterproofing.on('input', calculate);
-DOM.oldInsulation.on('input', calculate);
+DOM.oldThickness.on('input', calculate);
 DOM.newThickness.on('input', calculate);
 DOM.roofType.on('change', calculate);
 $('.suggest_step').on('click', calculate);
