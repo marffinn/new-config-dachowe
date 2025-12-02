@@ -49,7 +49,7 @@ function calculate() {
         $('#stare_warstwy_section').toggle(hasOld);
     }
 
-    if (newThickness <= 50) {
+    if (newThickness <= 40) {
         DOM.calculation.empty();
         DOM.results.empty();
         return;
